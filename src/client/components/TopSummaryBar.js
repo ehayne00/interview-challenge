@@ -4,9 +4,9 @@ import DietaryCircle from "./DietaryCircle";
 
 const allDietaryOptions = ["ve", "v", "df", "gf", "n!"];
 
-const TopSummaryBar = ({ menuOptions }) => {
+const TopSummaryBar = ({ selectedOptions }) => {
   const getCount = (str) => {
-    return menuOptions.filter((el) => el.dietaries.includes(str)).length;
+    return selectedOptions?.filter((el) => el.dietaries.includes(str)).length;
   };
   return (
     <Flex
@@ -15,14 +15,14 @@ const TopSummaryBar = ({ menuOptions }) => {
         justifyContent: "space-between",
         backgroundColor: "#F8F8F8",
         px: "40px",
-        py: "20px",
+        py: "30px",
         mb: "50px",
       }}
     >
-      <Text sx={{ fontWeight: 600 }}>{menuOptions.length} items</Text>
+      <Text sx={{ fontWeight: 600 }}>{selectedOptions?.length} items</Text>
       <Flex sx={{ flexDirection: "row" }}>
         {allDietaryOptions.map((el) => (
-          <Flex sx={{ flexDirection: "row", alignItems: "center" }}>
+          <Flex sx={{ flexDirection: "row", alignItems: "center" }} key={el}>
             <Text>{getCount(el)}x </Text>
             <DietaryCircle text={el} />
           </Flex>

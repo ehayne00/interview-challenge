@@ -19,38 +19,47 @@ const ItemCard = ({
   isSelected,
   setSelectedOptions,
   selectedOptions,
-}) => (
-  <Flex
-    sx={{
-      flexDirection: "column",
-      p: "10px",
-      position: "relative",
-      backgroundColor: "white",
-      mb: "20px",
-      boxShadow: "0px 0px 5px 1px rgba(128,128,128,0.3)",
-      borderRadius: "6px",
-      cursor: isSelected ? "default" : "pointer",
-    }}
-    onClick={() => {
-      isSelected ? null : setSelectedOptions([...selectedOptions, item]);
-    }}
-  >
-    {isSelected && (
-      <CloseButton
-        onClick={() =>
-          setSelectedOptions([
-            ...selectedOptions.filter((opt) => opt.id !== item.id),
-          ])
-        }
-      />
-    )}
-    <Text sx={{ fontWeight: 600, mb: "10px" }}>{item?.name}</Text>
-    <Flex sx={{ flexDirection: "row" }}>
-      {item?.dietaries?.map((dietary) => (
-        <DietaryCircle text={dietary} />
-      ))}
+}) => {
+  const addUniqueSelection = () => {
+    const selectedAlready = selectedOptions.find((opt) => opt.id === item.id);
+    console.log("selectedAlready", selectedAlready)
+    if (!selectedAlready) {
+      setSelectedOptions([...selectedOptions, item]);
+    }
+  };
+  return (
+    <Flex
+      sx={{
+        flexDirection: "column",
+        p: "10px",
+        position: "relative",
+        backgroundColor: "white",
+        mb: "20px",
+        boxShadow: "0px 0px 5px 1px rgba(128,128,128,0.3)",
+        borderRadius: "6px",
+        cursor: isSelected ? "default" : "pointer",
+      }}
+      onClick={() => {
+        isSelected ? null : addUniqueSelection();
+      }}
+    >
+      {isSelected && (
+        <CloseButton
+          onClick={() =>
+            setSelectedOptions([
+              ...selectedOptions?.filter((opt) => opt.id !== item.id),
+            ])
+          }
+        />
+      )}
+      <Text sx={{ fontWeight: 600, mb: "10px" }}>{item?.name}</Text>
+      <Flex sx={{ flexDirection: "row" }}>
+        {item?.dietaries?.map((dietary) => (
+          <DietaryCircle key={dietary} text={dietary} />
+        ))}
+      </Flex>
     </Flex>
-  </Flex>
-);
+  );
+};
 
 export default ItemCard;

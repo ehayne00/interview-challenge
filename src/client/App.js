@@ -5,9 +5,6 @@ import SideBarOptions from "./components/SideBarOptions";
 import MenuPreview from "./components/MenuPreview";
 const axios = require("axios");
 
-// sort the title
-// sort the filter from X button
-
 const MenuPageOverview = () => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -15,26 +12,33 @@ const MenuPageOverview = () => {
   const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     axios
       .get(
         searchTerm
           ? `http://localhost:8080/api/items/?search=${searchTerm}`
           : "http://localhost:8080/api/items"
       )
-      .then(({ data }) => setMenuOptions(data?.items))
-      .catch((e) => {
-        console.log("error:", e);
-        setHasError(true);
+      .then(({ data, error }) => {
+        if (error) throw Error(error);
+        setMenuOptions(data?.items);
+      })
+      .catch((error) => {
+        console.log("error:", error);
+        if (isMounted) setHasError(true);
       });
+    return () => {
+      isMounted = false;
+    };
   }, [searchTerm]);
 
   if (hasError) return <Text>There was a problem loading this page</Text>;
 
   if (!menuOptions.length) return <Spinner />;
-  
+
   return (
     <>
-      <TopSummaryBar menuOptions={menuOptions} />
+      <TopSummaryBar selectedOptions={selectedOptions} />
       <Flex sx={{ flexDirection: "row", px: "40px" }}>
         <SideBarOptions
           menuOptions={menuOptions}
@@ -43,8 +47,8 @@ const MenuPageOverview = () => {
           selectedOptions={selectedOptions}
         />
         <MenuPreview
-          menuOptions={menuOptions}
           selectedOptions={selectedOptions}
+          setSelectedOptions={setSelectedOptions}
         />
       </Flex>
     </>

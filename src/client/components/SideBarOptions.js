@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Flex, Text, Input } from "theme-ui";
+import React from "react";
+import { Flex, Input } from "theme-ui";
 import ItemCard from "./ItemCard";
 
 const SideBarOptions = ({
@@ -28,6 +28,7 @@ const SideBarOptions = ({
     />
     {menuOptions?.map((item) => (
       <ItemCard
+        key={item.id}
         item={item}
         setSelectedOptions={setSelectedOptions}
         selectedOptions={selectedOptions}
