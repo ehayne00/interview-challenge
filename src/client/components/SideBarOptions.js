@@ -2,13 +2,18 @@ import React, { useState } from "react";
 import { Flex, Text, Input } from "theme-ui";
 import ItemCard from "./ItemCard";
 
-const SideBarOptions = ({ menuOptions, greyBacking, setSearchTerm }) => (
+const SideBarOptions = ({
+  menuOptions,
+  setSearchTerm,
+  setSelectedOptions,
+  selectedOptions,
+}) => (
   <Flex
     sx={{
       flexDirection: "column",
       width: "350px",
       p: "20px",
-      backgroundColor: greyBacking,
+      backgroundColor: "#F8F8F8",
     }}
   >
     <Input
@@ -22,7 +27,11 @@ const SideBarOptions = ({ menuOptions, greyBacking, setSearchTerm }) => (
       onChange={(e) => setSearchTerm(e.target.value)}
     />
     {menuOptions?.map((item) => (
-      <ItemCard item={item} />
+      <ItemCard
+        item={item}
+        setSelectedOptions={setSelectedOptions}
+        selectedOptions={selectedOptions}
+      />
     ))}
   </Flex>
 );

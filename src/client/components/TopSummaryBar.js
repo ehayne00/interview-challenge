@@ -4,7 +4,7 @@ import DietaryCircle from "./DietaryCircle";
 
 const allDietaryOptions = ["ve", "v", "df", "gf", "n!"];
 
-const TopSummaryBar = ({ px, menuOptions, greyBacking }) => {
+const TopSummaryBar = ({ menuOptions }) => {
   const getCount = (str) => {
     return menuOptions.filter((el) => el.dietaries.includes(str)).length;
   };
@@ -13,8 +13,8 @@ const TopSummaryBar = ({ px, menuOptions, greyBacking }) => {
       sx={{
         flexDirection: "row",
         justifyContent: "space-between",
-        backgroundColor: greyBacking,
-        px: px,
+        backgroundColor: "#F8F8F8",
+        px: "40px",
         py: "20px",
         mb: "50px",
       }}

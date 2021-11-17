@@ -1,36 +1,43 @@
 import React, { useState, useEffect } from "react";
 import { Flex } from "theme-ui";
-import menuOptions from "../server/items";
 import TopSummaryBar from "./components/TopSummaryBar";
 import SideBarOptions from "./components/SideBarOptions";
 import MenuPreview from "./components/MenuPreview";
+const axios = require("axios");
+
+// sort the title
+// sort the filter from X button
 
 const MenuPageOverview = () => {
-  console.log("menuOptions", menuOptions);
-  const px = "40px";
-  const greyBacking = "#F8F8F8";
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [menuOptions, setMenuOptions] = useState([]);
+
   useEffect(() => {
-    menuOptions(searchTerm);
+    axios
+      .get(
+        searchTerm
+          ? `http://localhost:8080/api/items/?search=${searchTerm}`
+          : "http://localhost:8080/api/items"
+      )
+      .then(({ data }) => setMenuOptions(data?.items))
+      .catch((e) => console.log("error:", e));
   }, [searchTerm]);
   return (
     <>
       <TopSummaryBar
         menuOptions={menuOptions}
-        px={px}
-        greyBacking={greyBacking}
       />
-      <Flex sx={{ flexDirection: "row", px: px }}>
+      <Flex sx={{ flexDirection: "row", px: "40px" }}>
         <SideBarOptions
           menuOptions={menuOptions}
-          greyBacking={greyBacking}
           setSearchTerm={setSearchTerm}
+          setSelectedOptions={setSelectedOptions}
+          selectedOptions={selectedOptions}
         />
         <MenuPreview
           menuOptions={menuOptions}
           selectedOptions={selectedOptions}
-          greyBacking={greyBacking}
         />
       </Flex>
     </>

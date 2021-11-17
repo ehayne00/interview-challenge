@@ -14,7 +14,12 @@ const CloseButton = styled(XCircleIcon)`
   cursor: pointer;
 `;
 
-const ItemCard = ({ item, isSelected }) => (
+const ItemCard = ({
+  item,
+  isSelected,
+  setSelectedOptions,
+  selectedOptions,
+}) => (
   <Flex
     sx={{
       flexDirection: "column",
@@ -26,8 +31,19 @@ const ItemCard = ({ item, isSelected }) => (
       borderRadius: "6px",
       cursor: isSelected ? "default" : "pointer",
     }}
+    onClick={() => {
+      isSelected ? null : setSelectedOptions([...selectedOptions, item]);
+    }}
   >
-    {isSelected && <CloseButton />}
+    {isSelected && (
+      <CloseButton
+        onClick={() =>
+          setSelectedOptions([
+            ...selectedOptions.filter((opt) => opt.id !== item.id),
+          ])
+        }
+      />
+    )}
     <Text sx={{ fontWeight: 600, mb: "10px" }}>{item?.name}</Text>
     <Flex sx={{ flexDirection: "row" }}>
       {item?.dietaries?.map((dietary) => (
